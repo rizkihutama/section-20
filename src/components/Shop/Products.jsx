@@ -7,9 +7,16 @@ export default function Products(props) {
       <h2>Buy your favorite products</h2>
       <ul>
         <ProductItem
-          title='Test'
-          price={6}
-          description='This is a first product - amazing!'
+          id='ip15pm'
+          title='iPhone 15 Pro Max'
+          price={1199}
+          description='Apple Product'
+        />
+        <ProductItem
+          id='s23+'
+          title='Samsung S23+'
+          price={799.99}
+          description='Samsung Product'
         />
       </ul>
     </section>
