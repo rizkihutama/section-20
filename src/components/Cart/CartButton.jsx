@@ -1,7 +1,7 @@
 import classes from './CartButton.module.css';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { toggleShowCart } from '../../store/slice/cartSlice';
+import { toggleShowCart } from '../../store/slice/showCartSlice';
 
 export default function CartButton(props) {
   const cartItems = useSelector((state) => state.cart.items);

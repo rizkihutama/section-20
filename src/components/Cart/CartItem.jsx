@@ -19,23 +19,23 @@ export default function CartItem({ items }) {
   return (
     <>
       {items.map((item) => (
-        <li className={classes.item} key={item?.id}>
+        <li className={classes.item} key={item.id}>
           <header>
-            <h3>{item?.title}</h3>
+            <h3>{item.title}</h3>
             <div className={classes.price}>
-              ${item?.subtotal.toFixed(2)}{' '}
+              ${item.subtotal.toFixed(2)}{' '}
               <span className={classes.itemprice}>
-                (${item?.price.toFixed(2)}/item)
+                (${item.price.toFixed(2)}/item)
               </span>
             </div>
           </header>
           <div className={classes.details}>
             <div className={classes.quantity}>
-              x <span>{item?.quantity}</span>
+              x <span>{item.quantity}</span>
             </div>
             <div className={classes.actions}>
-              <button onClick={() => substractItemHandler(item?.id)}>-</button>
-              <button onClick={() => addItemHandler(item?.id)}>+</button>
+              <button onClick={() => substractItemHandler(item.id)}>-</button>
+              <button onClick={() => addItemHandler(item.id)}>+</button>
             </div>
           </div>
         </li>

@@ -1,68 +1,63 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  showCart: false,
   items: [],
+  totalPrice: 0,
+  totalQuantity: 0,
 };
 
 export const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    toggleShowCart: (state) => {
-      state.showCart = !state.showCart;
-    },
     addItem: (state, action) => {
       const newItem = action.payload;
-      const existingItemIndex = state.items.findIndex(
-        (item) => item.id === newItem.id
-      );
+      const existingItem = state.items.find((item) => item.id === newItem.id);
 
-      if (existingItemIndex !== -1) {
-        const existingItem = state.items[existingItemIndex];
-        const updatedQuantity = existingItem.quantity + 1;
-        const updatedSubtotal = updatedQuantity * existingItem.price;
-
-        state.items[existingItemIndex] = {
-          ...existingItem,
-          quantity: updatedQuantity,
-          subtotal: updatedSubtotal,
-        };
-      } else {
+      if (!existingItem) {
         state.items.push({
           ...newItem,
           quantity: 1,
           subtotal: newItem.price * 1,
         });
+      } else {
+        existingItem.quantity++;
+        existingItem.subtotal = existingItem.quantity * existingItem.price;
       }
+
+      state.totalPrice = state.items.reduce(
+        (sum, obj) => sum + obj.subtotal,
+        0
+      );
+      state.totalQuantity = state.items.reduce(
+        (sum, obj) => sum + obj.quantity,
+        0
+      );
     },
     subtractItem: (state, action) => {
       const newItem = action.payload;
-      const existingItemIndex = state.items.findIndex(
-        (item) => item.id === newItem.id
-      );
+      const existingItem = state.items.find((item) => item.id === newItem.id);
 
-      const existingItem = state.items[existingItemIndex];
-      const updatedQuantity = existingItem.quantity - 1;
-      const updatedSubtotal = updatedQuantity * existingItem.price;
-
-      if (updatedQuantity === 0) {
+      if (existingItem.quantity === 1) {
         state.items = state.items.filter(
           (item) => item.id !== action.payload.id
         );
       } else {
-        state.items[existingItemIndex] = {
-          ...existingItem,
-          quantity: updatedQuantity,
-          subtotal: updatedSubtotal,
-        };
+        existingItem.quantity--;
+        existingItem.subtotal -= newItem.price;
       }
 
-      // console.log(updatedQuantity);
+      state.totalPrice = parseFloat(
+        state.items.reduce((sum, obj) => sum + obj.subtotal, 0).toFixed(2)
+      );
+      state.totalQuantity = state.items.reduce(
+        (sum, obj) => sum + obj.quantity,
+        0
+      );
     },
   },
 });
 
-export const { toggleShowCart, addItem, subtractItem } = cartSlice.actions;
+export const { addItem, subtractItem } = cartSlice.actions;
 
 export default cartSlice.reducer;
